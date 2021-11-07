@@ -8,85 +8,94 @@ if fn.empty(fn.glob(install_path)) > 0 then
   execute 'packadd packer.nvim'
 end
 
+-- For creating mappings
+map = vim.api.nvim_set_keymap
+opts = { noremap=true, silent=true }
+
 require('packer').startup(function()
--- LSP
-use { 'neovim/nvim-lspconfig' }
-use { 'hrsh7th/nvim-compe' }
-use { 'hrsh7th/vim-vsnip' }
-use { "ray-x/lsp_signature.nvim" }
-use { 
-  'glepnir/lspsaga.nvim',
-  config = function()
-    require('lspsaga').init_lsp_saga()
-  end
-}
-use { 'puremourning/vimspector' }
-use { 'onsails/lspkind-nvim' }
+  use { 'wbthomason/packer.nvim' } -- Package Manager
 
--- Treesitter
-use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
-use { 'nvim-treesitter/playground' }
-use { 'nvim-treesitter/nvim-treesitter-refactor' }
+  use { -- Telescope
+      'nvim-telescope/telescope.nvim',
+      requires = { {'nvim-lua/plenary.nvim'} },
+      config = function() require('mtelescope') end
+  }
 
--- Rice
-use { 'sainnhe/gruvbox-material' }
-use { 'Th3Whit3Wolf/one-nvim' }
-use { 'rakr/vim-one' }
-use { 'atelierbram/Base2Tone-vim' }
-use { 'Glench/Vim-Jinja2-Syntax' }
-use { 'junegunn/goyo.vim' }
-use {
-  "folke/zen-mode.nvim",
-  config = function()
-    require("zen-mode").setup {
-      -- your configuration comes here
-      -- or leave it empty to use the default settings
-      -- refer to the configuration section below
-    }
-  end
-}
+  use { -- Completion Engine
+    'hrsh7th/nvim-cmp',
+    requires = {
+      'hrsh7th/cmp-nvim-lsp',
+      'hrsh7th/cmp-buffer',
+      'hrsh7th/cmp-path',
+      'hrsh7th/cmp-path',
+      'hrsh7th/cmp-vsnip',
+      'hrsh7th/vim-vsnip',
+    },
+    config = function() require('mcmp') end
+  }
 
--- Telescope
-use {
-  'nvim-telescope/telescope.nvim',
-  requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}}
-}
+  use {
+    'neovim/nvim-lspconfig',
+    config = [[require 'lspconf']]
+   }
 
--- Rust
-use { 'simrat39/rust-tools.nvim' }
+   use {
+     'glepnir/lspsaga.nvim',
+     requires = { 'neovim/nvim-lspconfig' }
+   }
 
--- -- Which Key
--- use {
---   "folke/which-key.nvim",
---   config = function()
---     require("which-key").setup {
---       -- your configuration comes here
---       -- or leave it empty to use the default settings
---       -- refer to the configuration section below
---     }
---   end
--- }
+  use { -- Colorschemes
+    'rakr/vim-one',
+    'sainnhe/everforest',
+    'morhetz/gruvbox',
+  } 
 
--- Motions
-use { 'moll/vim-bbye' }
-use { 'justinmk/vim-sneak' }
-use { 'unblevable/quick-scope' }
-use { 'tpope/vim-commentary' }
-use { 'tpope/vim-surround' }
-use { 'windwp/nvim-autopairs' }
+  use { -- File Explorer
+    'kyazdani42/nvim-tree.lua',
+    requires = 'kyazdani42/nvim-web-devicons',
+    config = function()
+      require('nvim-tree').setup()
+      map('n', '<C-n>', '<cmd>NvimTreeToggle<CR>', opts)
+    end
+  }
 
--- Git
-use { 'mhinz/vim-signify' }
-use { 'tpope/vim-fugitive' }
+  use {
+    'nvim-treesitter/nvim-treesitter',
+    config = function() require 'mtreesitter' end
+  }
 
--- Tmux
-use { 'christoomey/vim-tmux-navigator' }
-use { 'preservim/vimux' }
-use { 'nathanaelkane/vim-indent-guides' }
+  -- use { 
+    -- 'famiu/feline.nvim',
+    -- config = function() require('feline').setup() end,
+  -- }
 
--- Other
-use { 'godlygeek/tabular' }
-use { 'plasticboy/vim-markdown' }
-use { 'mhinz/vim-startify' }
-use { 'glacambre/firenvim', run = function() vim.fn['firenvim#install'](0) end }
+  use { 
+    'glepnir/dashboard-nvim',
+    opt = false,
+    config = [[vim.g.dashboard_default_executive = 'telescope']]
+  }
+
+  -- Window Navigation with C-{h,j,k,l}
+  use { 'christoomey/vim-tmux-navigator' } 
+
+  use {
+    'windwp/nvim-autopairs',
+    config = function()
+      require('nvim-autopairs').setup({
+        check_ts = true
+      })
+    end
+  }
+
+  use { 
+    'famiu/bufdelete.nvim',
+    opt = false,
+    config = function() 
+      map('n', '<leader>q', '<cmd>lua require("bufdelete").bufdelete(0, true)<cr>', opts)
+    end
+  }
+
+
+  use 'tpope/vim-repeat'
+  use 'tpope/vim-surround'
 end)
