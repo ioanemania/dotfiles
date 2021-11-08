@@ -12,6 +12,6 @@ exec([[
   autocmd Colorscheme * highlight Comment gui=Italic
 ]], false)
 
-cmd [[colorscheme everforest]]
+cmd [[colorscheme gruvbox]]
 -- |
 

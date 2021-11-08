@@ -75,6 +75,20 @@ require('packer').startup(function()
     config = [[vim.g.dashboard_default_executive = 'telescope']]
   }
 
+  use { 
+    'lukas-reineke/indent-blankline.nvim',
+    config = function()
+      vim.opt.list = true
+      vim.opt.listchars:append("eol:↴")
+      require('indent_blankline').setup {
+        char = "┊",
+        buftype_exclude = {"terminal"},
+        show_end_of_line = true,
+        show_current_context = true,
+      }
+    end
+  }
+
   -- Window Navigation with C-{h,j,k,l}
   use { 'christoomey/vim-tmux-navigator' } 
 
