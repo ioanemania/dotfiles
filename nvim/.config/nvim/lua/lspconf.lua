@@ -1,5 +1,20 @@
 local lspconfig = require('lspconfig')
--- local lspsaga = require('lspsaga')
+local configs = require('lspconfig/configs')
+local lspsaga = require('lspsaga')
+
+-- Default config for emmet
+configs.ls_emmet = {
+  default_config = {
+    cmd = { 'ls_emmet', '--stdio' };
+    filetypes = { 'html', 'css', 'scss', 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'haml',
+      'xml', 'xsl', 'pug', 'slim', 'sass', 'stylus', 'less', 'sss'};
+    root_dir = function(fname)
+      return vim.loop.cwd()
+    end;
+    settings = {};
+  };
+}
+
 
 local on_attach = function(client, bufnr)
   local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
@@ -26,8 +41,8 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', '<leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
   buf_set_keymap('n', '<leader>ln', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
   -- buf_set_keymap('n', '<leader>ln', '<cmd>Lspsaga rename<CR>', opts)
-  -- buf_set_keymap('n', '<leader>la', '<cmd>Telescope lsp_code_actions<CR>', opts)
-  buf_set_keymap('n', '<leader>la', '<cmd>Lspsaga code_action<CR>', opts)
+  buf_set_keymap('n', '<leader>la', '<cmd>Telescope lsp_code_actions<CR>', opts)
+  -- buf_set_keymap('n', '<leader>la', '<cmd>Lspsaga code_action<CR>', opts)
   buf_set_keymap('n', '<leader>ld', '<cmd>Telescope lsp_document_symbols<CR>', opts)
   buf_set_keymap('n', '<leader>e', '<cmd>Lspsaga show_line_diagnostics<CR>', opts)
   -- buf_set_keymap('n', '<leader>l[', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
@@ -56,7 +71,7 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
   }
 }
 
-local servers = { "pyright", "clangd", "rust_analyzer" }
+local servers = { "pyright", "clangd", "rust_analyzer", "tsserver", "html", "ls_emmet" }
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup { on_attach = on_attach, capabilities = capabilities }
 end
