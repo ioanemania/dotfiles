@@ -11,8 +11,9 @@ setopt appendhistory     #Append history to the history file (no overwriting)
 setopt sharehistory      #Share history across terminals
 setopt incappendhistory  #Immediately append to the history file, not just when a term i
 
+source $HOME/.zsh-vi-mode/zsh-vi-mode.plugin.zsh
 source $ZSH/zsh-autosuggestions/zsh-autosuggestions.zsh
-source $ZSH/fzf.sh
+source /usr/share/fzf/completion.zsh
 
 # Completion
 autoload -Uz compinit && compinit
@@ -33,22 +34,6 @@ function git_branch_name() {
 
 PROMPT=' %B%F{yellow}%1~%(!.#.)%b%f $(git_branch_name)%F{green}>%f '
 
-export DAY_START=8
-export DAY_END=20
-# # Base16 Shell
-BASE16_SHELL="$HOME/.config/base16-shell/"
-[ -n "$PS1" ] && \
-  [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
-    eval "$("$BASE16_SHELL/profile_helper.sh")"
-    DATE=`date +%H`
-    if [[ ($DATE -ge $DAY_START) && ($DATE -lt $DAY_END) ]]; then
-      base16_one-light
-      export BAT_THEME=OneHalfLight
-    else
-      base16_onedark
-      export BAT_THEME=OneHalfDark
-    fi
-
 # Beam shaped cursor
 echo -ne '\e[5 q'
 
@@ -56,25 +41,19 @@ bindkey "^[[1;5C" forward-word
 bindkey "^[[1;5D" backward-word
 bindkey '^ ' autosuggest-accept
 
-export M4PATH='.:~/texmf/tex/latex/Circuit_macros:'
 export FZF_DEFAULT_COMMAND='fd --type f'
-# To apply the command to CTRL-T as well
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-# export FZF_DEFAULT_COMMAND="find -L * -path '*/\.*' -prune -o -type f -print -o -type l -print 2> /dev/null"
 
 # ALIASES
 alias t=tree
 alias vim=nvim
 alias v=vim
-alias neovide="neovide-disowned"
-alias nv=neovide
 alias ls="ls --color=auto -h"
 alias l="ls -l"
 alias la="ls -a"
 alias ll="ls -la"
-alias pandocls='pandoc -r markdown-auto_identifiers -t pdf --template ~/.local/share/latex/pandoc-template.tex --pdf-engine=xelatex --listings '
-alias steam="steam -no-browser -console"
 
-if command -v tmux &> /dev/null && [ -z "$TMUX" ]; then
-  tmux attach -t default || exec tmux new -s default && exit
-fi
+# if command -v tmux &> /dev/null && [ -z "$TMUX" ]; then
+#   tmux attach -t default || exec tmux new -s default && exit
+# fi
+
