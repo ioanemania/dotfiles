@@ -1,5 +1,4 @@
-export ZSH="$HOME/.zsh"
-export SHELL='/usr/bin/zsh'
+export ZSH="$HOME/.zsh" export SHELL='/usr/bin/zsh'
 
 export EDITOR=nvim
 export VISUAL=nvim
@@ -11,9 +10,14 @@ setopt appendhistory     #Append history to the history file (no overwriting)
 setopt sharehistory      #Share history across terminals
 setopt incappendhistory  #Immediately append to the history file, not just when a term i
 
-source $HOME/.zsh-vi-mode/zsh-vi-mode.plugin.zsh
+
 source $ZSH/zsh-autosuggestions/zsh-autosuggestions.zsh
-source /usr/share/fzf/completion.zsh
+
+function zvm_after_init() {
+  source $HOME/.fzf.zsh
+}
+
+source $HOME/.zsh-vi-mode/zsh-vi-mode.plugin.zsh
 
 # Completion
 autoload -Uz compinit && compinit
@@ -56,4 +60,3 @@ alias ll="ls -la"
 # if command -v tmux &> /dev/null && [ -z "$TMUX" ]; then
 #   tmux attach -t default || exec tmux new -s default && exit
 # fi
-
