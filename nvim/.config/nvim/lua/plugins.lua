@@ -110,6 +110,16 @@ require('packer').startup(function()
     end
   }
 
+  -- Git integration
+  use {
+    'lewis6991/gitsigns.nvim',
+    requires = { 'nvim-lua/plenary.nvim' },
+    config = function()
+      require('gitsigns').setup()
+    end
+  }
+
+
 
   use 'tpope/vim-repeat'
   use 'tpope/vim-surround'
