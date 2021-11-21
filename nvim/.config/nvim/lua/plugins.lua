@@ -44,6 +44,11 @@ require('packer').startup(function()
      requires = { 'neovim/nvim-lspconfig' }
    }
 
+  use {
+    'nvim-treesitter/nvim-treesitter',
+    config = function() require 'mtreesitter' end
+  }
+
   use { -- Colorschemes
     'morhetz/gruvbox',
     'savq/melange',
@@ -55,14 +60,28 @@ require('packer').startup(function()
     'kyazdani42/nvim-tree.lua',
     requires = 'kyazdani42/nvim-web-devicons',
     config = function()
-      require('nvim-tree').setup()
+      vim.g.nvim_tree_respect_buf_cwd = 1
+
+      require('nvim-tree').setup({
+        update_cwd = true,
+        update_focused_file = {
+          enable = true,
+          update_cwd = true
+        },
+      })
+
       map('n', '<C-n>', '<cmd>NvimTreeToggle<CR>', opts)
     end
   }
 
   use {
-    'nvim-treesitter/nvim-treesitter',
-    config = function() require 'mtreesitter' end
+    'ahmedkhalf/project.nvim',
+    requires = 'nvim-telescope/telescope.nvim',
+    config = function() 
+      require("project_nvim").setup()
+      require('telescope').load_extension('projects')
+      map('n', '<leader>fp', '<cmd>Telescope projects<cr>', opts)
+    end
   }
 
   -- use { 
@@ -77,7 +96,8 @@ require('packer').startup(function()
       vim.g.dashboard_default_executive = 'telescope'
 
       vim.g.dashboard_custom_section = {
-	      a = { description = {'Find File		SPC f f'}, command = 'Telescope find_files' }
+	      a = { description = {'Find File		SPC f f'}, command = 'Telescope find_files' },
+	      b = { description = {'Recent Projects		SPC f p'}, command = 'Telescope projects' },
       }
 
       vim.g.dashboard_custom_header = {
@@ -134,7 +154,15 @@ require('packer').startup(function()
     'lewis6991/gitsigns.nvim',
     requires = { 'nvim-lua/plenary.nvim' },
     config = function()
-      require('gitsigns').setup()
+      require('gitsigns').setup {
+        signs = {
+          add          = {hl = 'GitSignsAdd'   , text = '┃', numhl='GitSignsAddNr'   , linehl='GitSignsAddLn'},
+          change       = {hl = 'GitSignsChange', text = '┃', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
+          delete       = {hl = 'GitSignsDelete', text = '_', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
+          topdelete    = {hl = 'GitSignsDelete', text = '‾', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
+          changedelete = {hl = 'GitSignsChange', text = '~', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
+        }
+      }
     end
   }
 
