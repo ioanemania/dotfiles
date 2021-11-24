@@ -31,11 +31,14 @@ require('packer').startup(function()
       'hrsh7th/cmp-vsnip',
       'hrsh7th/vim-vsnip',
     },
+
     config = function() require('mcmp') end
   }
 
   use {
     'neovim/nvim-lspconfig',
+
+    requires = { 'ray-x/lsp_signature.nvim' },
     config = [[require 'lspconf']]
    }
 
@@ -47,6 +50,11 @@ require('packer').startup(function()
   use {
     'nvim-treesitter/nvim-treesitter',
     config = function() require 'mtreesitter' end
+  }
+
+  use {
+    'terrortylor/nvim-comment',
+    config = [[require 'nvim_comment'.setup()]]
   }
 
   use { -- Colorschemes
@@ -96,9 +104,11 @@ require('packer').startup(function()
       vim.g.dashboard_default_executive = 'telescope'
 
       vim.g.dashboard_custom_section = {
-	      a = { description = {'Find File		SPC f f'}, command = 'Telescope find_files' },
-	      b = { description = {'Recent Projects		SPC f p'}, command = 'Telescope projects' },
+	      a = { description = {'Find File         SPC f f'}, command = 'Telescope find_files' },
+	      b = { description = {'Recent Projects   SPC f p'}, command = 'Telescope projects' },
       }
+
+      vim.g.dashboard_custom_footer = {}
 
       vim.g.dashboard_custom_header = {
         [[]],
@@ -110,6 +120,9 @@ require('packer').startup(function()
         [[ ██║╚██╗██║ ██╔══╝  ██║   ██║ ╚██╗ ██╔╝ ██║ ██║╚██╔╝██║]],
         [[ ██║ ╚████║ ███████╗╚██████╔╝  ╚████╔╝  ██║ ██║ ╚═╝ ██║]],
         [[ ╚═╝  ╚═══╝ ╚══════╝ ╚═════╝    ╚═══╝   ╚═╝ ╚═╝     ╚═╝]],
+        [[]],
+        [[]],
+        [[]],
       }
     end
   }

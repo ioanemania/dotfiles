@@ -6,7 +6,7 @@ local lspsaga = require('lspsaga')
 configs.ls_emmet = {
   default_config = {
     cmd = { 'ls_emmet', '--stdio' };
-    filetypes = { 'html', 'css', 'scss', 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'haml',
+    filetypes = { 'html', 'css', 'scss', 'javascriptreact', 'typescript', 'typescriptreact', 'haml',
       'xml', 'xsl', 'pug', 'slim', 'sass', 'stylus', 'less', 'sss'};
     root_dir = function(fname)
       return vim.loop.cwd()
@@ -51,13 +51,13 @@ local on_attach = function(client, bufnr)
   -- buf_set_keymap('n', '<leader>lq', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
   buf_set_keymap("n", "<leader>lf", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
 
-  -- require("lsp_signature").on_attach({
-  --   bind = true,
-  --   doc_lines = 0,
-  --   floating_window = false,
-  --   hint_enable = true,
-  --   hint_prefix = "@ "
-  -- })
+  require("lsp_signature").on_attach({
+    bind = true,
+    doc_lines = 0,
+    floating_window = false,
+    hint_enable = true,
+    hint_prefix = "@ ",
+  })
 
 end
 
@@ -71,10 +71,23 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
   }
 }
 
-local servers = { "pyright", "clangd", "rust_analyzer", "tsserver", "html", "ls_emmet" }
+local servers = { "pyright", "clangd", "rust_analyzer", "tsserver", "html", "ls_emmet"}
 for _, lsp in ipairs(servers) do
-  lspconfig[lsp].setup { on_attach = on_attach, capabilities = capabilities }
+  lspconfig[lsp].setup { 
+    on_attach = on_attach, capabilities = capabilities, handlers = {
+      ["textDocument/publishDiagnostics"] = vim.lsp.with(
+        vim.lsp.diagnostic.on_publish_diagnostics, {
+          -- Disable virtual_text
+          virtual_text = false
+      })
+    }}
 end
+
+require'lspconfig'.omnisharp.setup{
+    cmd = { "omnisharp", "--languageserver" , "--hostPID", tostring(pid) },
+    on_attach = on_attach,
+    capabilities = capabilities
+}
 
 -- Autoformatting 
 -- vim.api.nvim_exec(
