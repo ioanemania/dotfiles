@@ -39,7 +39,7 @@ function git_branch_name() {
 PROMPT=' %B%F{yellow}%1~%(!.#.)%b%f $(git_branch_name)%F{green}>%f '
 
 # Beam shaped cursor
-echo -ne '\e[5 q'
+# echo -ne '\e[5 q'
 
 bindkey "^[[1;5C" forward-word
 bindkey "^[[1;5D" backward-word
