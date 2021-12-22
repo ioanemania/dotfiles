@@ -53,15 +53,24 @@ require('packer').startup(function()
   }
 
   use {
+    'baabelfish/nvim-nim'
+  }
+
+  use {
     'terrortylor/nvim-comment',
     config = [[require 'nvim_comment'.setup()]]
   }
 
   use { -- Colorschemes
-    'morhetz/gruvbox',
     'savq/melange',
+    'mhartington/oceanic-next',
+    'sainnhe/sonokai',
+    'glepnir/zephyr-nvim',
+    'shaunsingh/moonlight.nvim',
     'folke/tokyonight.nvim',
     'folke/lsp-colors.nvim',
+    'rktjmp/lush.nvim',
+    'ellisonleao/gruvbox.nvim',
   } 
 
   use { -- File Explorer
@@ -169,8 +178,8 @@ require('packer').startup(function()
     config = function()
       require('gitsigns').setup {
         signs = {
-          add          = {hl = 'GitSignsAdd'   , text = '┃', numhl='GitSignsAddNr'   , linehl='GitSignsAddLn'},
-          change       = {hl = 'GitSignsChange', text = '┃', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
+          -- add          = {hl = 'GitSignsAdd'   , text = '┃', numhl='GitSignsAddNr'   , linehl='GitSignsAddLn'},
+          -- change       = {hl = 'GitSignsChange', text = '┃', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
           delete       = {hl = 'GitSignsDelete', text = '_', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
           topdelete    = {hl = 'GitSignsDelete', text = '‾', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
           changedelete = {hl = 'GitSignsChange', text = '~', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
@@ -179,8 +188,12 @@ require('packer').startup(function()
     end
   }
 
+  use { 
+    'karb94/neoscroll.nvim',
+    config = [[require'neoscroll'.setup()]]
+  }
 
-
+  use 'ggandor/lightspeed.nvim'
   use 'tpope/vim-repeat'
   use 'tpope/vim-surround'
 end)

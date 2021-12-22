@@ -2,20 +2,6 @@ local lspconfig = require('lspconfig')
 local configs = require('lspconfig/configs')
 local lspsaga = require('lspsaga')
 
--- Default config for emmet
-configs.ls_emmet = {
-  default_config = {
-    cmd = { 'ls_emmet', '--stdio' };
-    filetypes = { 'html', 'css', 'scss', 'javascriptreact', 'typescript', 'typescriptreact', 'haml',
-      'xml', 'xsl', 'pug', 'slim', 'sass', 'stylus', 'less', 'sss'};
-    root_dir = function(fname)
-      return vim.loop.cwd()
-    end;
-    settings = {};
-  };
-}
-
-
 local on_attach = function(client, bufnr)
   local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
   local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
@@ -25,6 +11,16 @@ local on_attach = function(client, bufnr)
 
   -- Mappings.
   local opts = { noremap=true, silent=true }
+
+  -- DIAGNOSTIC SETUP
+  vim.diagnostic.config({
+    virtual_text = false
+  })
+
+  -- buf_set_keymap('n', '<leader>le', '<Cmd>vim.diagnostic.open_float()<CR>', opts)
+  buf_set_keymap('n', '<leader>le', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+  buf_set_keymap('n', '<leader>l]', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+  buf_set_keymap('n', '<leader>l[', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
 
   -- See `:help vim.lsp.*` for documentation on any of the below functions
   buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
@@ -44,7 +40,7 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', '<leader>la', '<cmd>Telescope lsp_code_actions<CR>', opts)
   -- buf_set_keymap('n', '<leader>la', '<cmd>Lspsaga code_action<CR>', opts)
   buf_set_keymap('n', '<leader>ld', '<cmd>Telescope lsp_document_symbols<CR>', opts)
-  buf_set_keymap('n', '<leader>e', '<cmd>Lspsaga show_line_diagnostics<CR>', opts)
+  -- !!! buf_set_keymap('n', '<leader>e', '<cmd>Lspsaga show_line_diagnostics<CR>', opts)
   -- buf_set_keymap('n', '<leader>l[', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
   -- buf_set_keymap('n', '<leader>l]', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
   -- buf_set_keymap('n', '<leader>l[', '<cmd>Lspsaga diagnostic_jump_next<CR>', opts) buf_set_keymap('n', '<leader>l]', '<cmd>Lspsaga diagnostic_jump_prev<CR>', opts)
@@ -71,7 +67,7 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
   }
 }
 
-local servers = { "pyright", "clangd", "rust_analyzer", "tsserver", "html", "ls_emmet"}
+local servers = { "pyright", "clangd", "rust_analyzer", "tsserver", "html" }
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup { 
     on_attach = on_attach, capabilities = capabilities, handlers = {

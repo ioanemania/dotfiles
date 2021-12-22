@@ -12,6 +12,4 @@ exec([[
   autocmd Colorscheme * highlight Comment gui=Italic
 ]], false)
 
-cmd [[colorscheme melange]]
--- |
-
+cmd [[colorscheme sonokai]]
