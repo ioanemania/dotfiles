@@ -1,4 +1,4 @@
-local execute = vim.api.nvim_command
+local execute = vim.api.nvim_commanh
 local fn = vim.fn
 
 local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
@@ -16,9 +16,19 @@ require('packer').startup(function()
   use { 'wbthomason/packer.nvim' } -- Package Manager
 
   use { -- Telescope
-      'nvim-telescope/telescope.nvim',
-      requires = { {'nvim-lua/plenary.nvim'} },
-      config = function() require('mtelescope') end
+    'nvim-telescope/telescope.nvim',
+    requires = { {'nvim-lua/plenary.nvim'} },
+    config = function() require('mtelescope') end
+  }
+
+  use {
+    'akinsho/toggleterm.nvim',
+    config = function() 
+      require('toggleterm').setup() 
+      map('n', '<M-BS>', '<cmd>ToggleTerm direction=float<CR>', opts)
+      map('t', '<M-BS>', '<cmd>ToggleTerm direction=float<CR>', opts)
+      map('n', '<leader>tg', '<cmd>TermExec cmd="lazygit && exit" direction=float<CR>', opts)
+    end
   }
 
   use { -- Completion Engine
@@ -40,12 +50,16 @@ require('packer').startup(function()
 
     requires = { 'ray-x/lsp_signature.nvim' },
     config = [[require 'lspconf']]
-   }
+  }
 
-   use {
-     'glepnir/lspsaga.nvim',
-     requires = { 'neovim/nvim-lspconfig' }
-   }
+  use {
+    'puremourning/vimspector',
+  }
+
+  use {
+    'glepnir/lspsaga.nvim',
+    requires = { 'neovim/nvim-lspconfig' }
+  }
 
   use {
     'nvim-treesitter/nvim-treesitter',
@@ -63,24 +77,18 @@ require('packer').startup(function()
 
   use { -- Colorschemes
     'savq/melange',
-    'mhartington/oceanic-next',
-    'sainnhe/sonokai',
-    'glepnir/zephyr-nvim',
-    'shaunsingh/moonlight.nvim',
-    'folke/tokyonight.nvim',
-    'folke/lsp-colors.nvim',
     'rktjmp/lush.nvim',
     'ellisonleao/gruvbox.nvim',
+    'ful1e5/onedark.nvim',
   } 
 
   use { -- File Explorer
     'kyazdani42/nvim-tree.lua',
     requires = 'kyazdani42/nvim-web-devicons',
     config = function()
-      vim.g.nvim_tree_respect_buf_cwd = 1
-
       require('nvim-tree').setup({
         update_cwd = true,
+        respect_buf_cwd = true,
         update_focused_file = {
           enable = true,
           update_cwd = true
@@ -92,21 +100,37 @@ require('packer').startup(function()
   }
 
   use {
+    'rcarriga/nvim-notify',
+    config = function() vim.notify = require('notify') end
+  }
+
+  use {
+    'nvim-lualine/lualine.nvim',
+    requires = { 'kyazdani42/nvim-web-devicons', opt = true },
+    config = function()
+      require('lualine').setup({
+        options = {
+          component_separators = { left = '', right = ''},
+          section_separators = { left = '', right = ''},
+        }
+      })
+    end
+  }
+
+
+  use {
     'ahmedkhalf/project.nvim',
     requires = 'nvim-telescope/telescope.nvim',
-    config = function() 
-      require("project_nvim").setup()
+    config = function()
+      require("project_nvim").setup({
+        manual_mode = true
+      })
       require('telescope').load_extension('projects')
       map('n', '<leader>fp', '<cmd>Telescope projects<cr>', opts)
     end
   }
 
-  -- use { 
-    -- 'famiu/feline.nvim',
-    -- config = function() require('feline').setup() end,
-  -- }
-
-  use { 
+  use {
     'glepnir/dashboard-nvim',
     opt = false,
     config = function()
@@ -145,7 +169,6 @@ require('packer').startup(function()
         char = "┊",
         buftype_exclude = {"terminal"},
         filetype_exclude = {"dashboard"},
-        show_end_of_line = true,
         show_current_context = true,
       }
     end
@@ -171,6 +194,14 @@ require('packer').startup(function()
     end
   }
 
+  -- Harpoon
+
+  use {
+    'ThePrimeagen/harpoon',
+    requires = { 'nvim-lua/plenary.nvim' },
+    config = function() require('mharpoon') end
+  }
+
   -- Git integration
   use {
     'lewis6991/gitsigns.nvim',
@@ -186,11 +217,6 @@ require('packer').startup(function()
         }
       }
     end
-  }
-
-  use { 
-    'karb94/neoscroll.nvim',
-    config = [[require'neoscroll'.setup()]]
   }
 
   use 'ggandor/lightspeed.nvim'

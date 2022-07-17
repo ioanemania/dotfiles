@@ -14,11 +14,11 @@ local on_attach = function(client, bufnr)
 
   -- DIAGNOSTIC SETUP
   vim.diagnostic.config({
-    virtual_text = false
+    virtual_text = false,
+    signs = true,
   })
 
-  -- buf_set_keymap('n', '<leader>le', '<Cmd>vim.diagnostic.open_float()<CR>', opts)
-  buf_set_keymap('n', '<leader>le', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+  buf_set_keymap('n', '<leader>le', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
   buf_set_keymap('n', '<leader>l]', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
   buf_set_keymap('n', '<leader>l[', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
 
@@ -67,7 +67,7 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
   }
 }
 
-local servers = { "pyright", "clangd", "rust_analyzer", "tsserver", "html" }
+local servers = { "pyright", "clangd", "rust_analyzer", "tsserver", "html"}
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup { 
     on_attach = on_attach, capabilities = capabilities, handlers = {
@@ -79,6 +79,12 @@ for _, lsp in ipairs(servers) do
     }}
 end
 
+require'lspconfig'.emmet_ls.setup{
+  filetypes = { "html", "typescriptreact", "javascriptreact" },
+  on_attach = on_attach,
+  capabilities = capabilities
+}
+
 require'lspconfig'.omnisharp.setup{
     cmd = { "omnisharp", "--languageserver" , "--hostPID", tostring(pid) },
     on_attach = on_attach,
@@ -86,8 +92,8 @@ require'lspconfig'.omnisharp.setup{
 }
 
 -- Autoformatting 
--- vim.api.nvim_exec(
--- [[
--- autocmd BufWritePre *.cpp,*.hpp lua vim.lsp.buf.formatting_sync(nil, 1000)
--- ]]
--- , true)
+vim.api.nvim_exec(
+[[
+autocmd BufWritePre *.cpp,*.hpp lua vim.lsp.buf.formatting_sync(nil, 1000)
+]]
+, true)
