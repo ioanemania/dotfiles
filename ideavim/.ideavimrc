@@ -1,0 +1,61 @@
+""" Map leader to space ---------------------
+let mapleader=" "
+
+""" Plugins  --------------------------------
+set surround
+set multiple-cursors
+set commentary
+set argtextobj
+set easymotion
+set textobj-entire
+set ReplaceWithRegister
+
+""" Plugin settings -------------------------
+let g:argtextobj_pairs="[:],(:),<:>"
+
+""" Common settings -------------------------
+set showmode
+set so=5
+set incsearch
+set nu
+
+""" Idea specific settings ------------------
+set ideajoin
+set ideastatusicon=gray
+set idearefactormode=keep
+
+""" Mappings --------------------------------
+map <leader>ve :edit ~/.ideavimrc<CR>
+map <leader>vv :source ~/.ideavimrc<CR>
+
+map <A-BS> <Action>(ActivateTerminalToolWindow)
+
+""" Movement Mappings ----------------
+map <C-l> <C-W>l
+map <C-h> <C-W>h
+map <C-j> <C-W>j
+map <C-k> <C-W>
+
+map <C-u> <C-u>zz
+map <C-d> <C-d>zz
+
+map s <Action>(AceAction)
+
+""" Navigation/Search Mappings <leader>f ----------------
+map <leader>ff <Action>(GotoFile)
+map <leader>fg <Action>(FindInPath)
+map <leader>fo <Action>(FileStructurePopup)
+map <leader>fc <Action>(GotoClass)
+map <leader>fs <Action>(GotoSymbol)
+
+""" Debugger Mappings <leader>d ----------------
+map <leader>dr <Action>(Run)
+map <leader>dd <Action>(Debug)
+map <leader>ds <Action>(Stop)
+map <leader>db <Action>(ToggleLineBreakpoint)
+
+""" Refactor Mappings <leader>r ----------------
+map <leader>rn <Action>(RenameElement)
+
+""" Git Mappings <leader>g ----------------
+map <leader>ga <Action>(Annotate)
