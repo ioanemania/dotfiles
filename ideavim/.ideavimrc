@@ -9,6 +9,7 @@ set argtextobj
 set easymotion
 set textobj-entire
 set ReplaceWithRegister
+set visualbell
 
 """ Plugin settings -------------------------
 let g:argtextobj_pairs="[:],(:),<:>"
@@ -34,7 +35,7 @@ map <A-BS> <Action>(ActivateTerminalToolWindow)
 map <C-l> <C-W>l
 map <C-h> <C-W>h
 map <C-j> <C-W>j
-map <C-k> <C-W>
+map <C-k> <C-W>k
 
 map <C-u> <C-u>zz
 map <C-d> <C-d>zz
