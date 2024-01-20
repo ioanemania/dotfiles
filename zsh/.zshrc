@@ -45,6 +45,7 @@ alias ls="eza"
 alias l="ls -l"
 alias la="l -a"
 alias t="eza --tree"
+alias tgi="t --git-ignore"
 alias cat=bat
 
 # GIT ALIASES
