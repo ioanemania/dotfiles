@@ -3,7 +3,7 @@ export PATH="$PATH:$HOME/.local/bin:$HOME/.bin"
 
 export EDITOR=nvim
 export LC_TIME="en_US.UTF-8"
-export BAT_THEME="Catppuccin-frappe"
+export BAT_THEME="OneHalfDark"
 export VPN="$HOME/.vpn"
 
 HISTFILE=~/.zsh_history
@@ -48,15 +48,64 @@ alias t="eza --tree"
 alias tgi="t --git-ignore"
 alias cat=bat
 
+# DOCKER ALIASES
+alias dc="docker compose"
+alias dcu="docker compose up"
+alias dcd="docker compose down"
+alias dcl="docker compose logs"
+alias dps="docker ps"
+
 # GIT ALIASES
 alias g=git
+alias ga="git add"
+alias gc="git checkout"
 alias gs="git status"
 alias gf="git fetch"
-alias gl="git log --oneline"
-alias gll="git log"
+alias gl="git log --format='%C(auto)%h %C(blue)%an%C(auto) %s %d'"
+alias gll="git log --name-only"
+alias glr="git log --pretty=reference"
+alias lg="lazygit"
 
-gc() {
-  git checkout $(git for-each-ref refs/heads/ --format='%(refname:short)' | fzf)
+gli() {
+  branch=$1
+  selected_commit=$(git log $1 --pretty=format:"%C(auto,yellow)%h%Creset %as %Cblue%an%Creset %s" | fzf --layout=reverse --preview "echo {} | sed -e 's/\s.*//' | xargs git show --name-only" | awk -F' ' '{print $1}')
+
+  if  [ -n "$selected_commit" ]; then
+    echo $selected_commit
+    echo $selected_commit | tr -d "\n" | xclip -sel clip
+  fi
+}
+
+gci() {
+  selected_branch=$(git for-each-ref refs/heads/ --format='%(refname:short)' | fzf --height=30%)
+
+  if  [ -n "$selected_branch" ]; then
+    echo $selected_branch
+    git checkout $selected_branch
+  fi
+}
+
+gai() {
+  selected_files=$(git status --porcelain | awk -F' ' '{print $2}' | fzf -m --height=30%)
+
+  if  [ -n "$selected_files" ]; then
+    echo $selected_files
+    git add $selected_files
+  fi
+
+  git status
+}
+
+load_env() {
+  local envFile="${1?Missing environment file}"
+  local environmentAsArray variableDeclaration
+  mapfile environmentAsArray < <(
+    grep --invert-match '^#' "${envFile}" \
+      | grep --invert-match '^\s*$'
+  ) # Uses grep to remove commented and blank lines
+  for variableDeclaration in "${environmentAsArray[@]}"; do
+    export "${variableDeclaration//[$'\r\n']}" # The substitution removes the line breaks
+  done
 }
 
 # if command -v tmux &> /dev/null && [ -z "$TMUX" ]; then
