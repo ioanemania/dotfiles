@@ -17,7 +17,6 @@
     "mpd",
     "idle_inhibitor",
     "pulseaudio",
-    "network",
     "cpu",
     "memory",
     "keyboard-state",
