@@ -8,7 +8,6 @@ path add ($env.HOME | path join .local/bin) ($env.HOME | path join .bin)
 # SHELL PROMPT CONFIG
 
 $env.STARSHIP_SHELL = "nu"
-$env.NVIM_APPNAME = "nvimnew"
 
 def create_left_prompt [] {
     starship prompt --cmd-duration $env.CMD_DURATION_MS $'--status=($env.LAST_EXIT_CODE)'
