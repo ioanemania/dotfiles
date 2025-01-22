@@ -1,0 +1,32 @@
+[colors]
+foreground = "#ECE1D7"
+background = "#101010"
+cursor_bg = "#ECE1D7"
+cursor_border = "#ECE1D7"
+cursor_fg = "#292522"
+selection_bg = "#403A36"
+selection_fg = "#ECE1D7"
+
+ansi = [
+  "#101010",
+  "#1f1f1f",
+  "#2e2e2e",
+  "#383838",
+  "#424242",
+  "#bfc5d0",
+  "#c7cdd8",
+  "#ced4df",
+]
+brights = [
+  "#eee8d5",
+  "#B8B7B1",
+  "#859ba2",
+  "#7b9198",
+  "#DFDFDA",
+  "#ced4df",
+  "#DAD4C3",
+  "#ced4df",
+]
+
+[metadata]
+name = 'Monochrome'

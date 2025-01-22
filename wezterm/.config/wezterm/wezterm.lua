@@ -4,49 +4,104 @@ local config = wezterm.config_builder()
 
 config.enable_wayland = false
 
-config.color_scheme = "Melange"
-
+config.color_scheme = "Everforest Dark (Gogh)"
 config.enable_tab_bar = false
-config.window_padding = {
-	top = 0,
-	left = 0,
-	right = 0,
-	bottom = 0,
-}
 config.window_close_confirmation = "NeverPrompt"
 -- config.window_background_opacity = 0.90
 config.warn_about_missing_glyphs = false
 
-config.font = wezterm.font("CozetteVector", { weight = "Medium" })
--- config.harfbuzz_features = { "calt=0", "clig=0", "liga=0" }
+-- FONT CONFIG
 
-wezterm.on("window-resized", function(window, _)
-	local window_dims = window:get_dimensions()
-	local overrides = window:get_config_overrides() or {}
+local small_font = {
+	font = wezterm.font("Cozette"),
+	size = 9,
+	rules = {}
+}
 
-	if not window_dims.is_full_screen then
-		if not overrides.window_padding then
-			-- not changing anything
-			return
-		end
-		overrides.window_padding = nil
-	else
-		local window_width = math.floor(window_dims.pixel_width / 1.5)
-		local padding = math.floor((window_dims.pixel_width - window_width) / 2)
-		local new_padding = {
-			left = padding,
-			right = padding,
-			top = 0,
-			bottom = 0,
-		}
-		if overrides.window_padding and new_padding.left == overrides.window_padding.left then
-			-- padding is same, avoid triggering further changes
-			return
-		end
-		overrides.window_padding = new_padding
+local large_font = {
+  font = wezterm.font("Liga Input"),
+  size = 15,
+  rules = {}
+  -- rules = {
+    --   {
+      --     intensity = 'Bold',
+      --     font = wezterm.font("Tamzen"),
+      --   }
+      -- },
+    }
+
+    local current_font = large_font
+    config.font = current_font.font
+    config.font_size = current_font.size
+    config.font_rules = current_font.rules
+
+    wezterm.on('toggle-font', function(window, _)
+      local overrides = window:get_config_overrides() or {}
+
+      if current_font == large_font then
+	current_font = small_font
+      else
+	current_font = large_font
+      end
+
+      overrides.font = current_font.font
+      overrides.font_size = current_font.size
+      overrides.font_rules = current_font.rules
+
+      window:set_config_overrides(overrides)
+    end)
+
+    -- Padding Config
+    local normal_window_padding = {
+      top = 0,
+      left = 10,
+      right = 10,
+      bottom = 0,
+    }
+
+    local current_window_padding = normal_window_padding
+    config.window_padding = current_window_padding
+
+    wezterm.on('toggle-padding', function(window, _)
+      local window_dims = window:get_dimensions()
+      local overrides = window:get_config_overrides() or {}
+
+      if current_window_padding == normal_window_padding then
+	local window_width = math.floor(window_dims.pixel_width / 2)
+	local padding = math.floor((window_dims.pixel_width - window_width) / 2)
+	local new_padding = {
+	  left = padding,
+	  right = padding,
+	  top = 0,
+	  bottom = 0,
+	}
+	if overrides.window_padding and new_padding.left == overrides.window_padding.left then
+	  -- padding is same, avoid triggering further changes
+	  return
 	end
-	window:set_config_overrides(overrides)
-end)
 
-config.font_size = 18
-return config
+	current_window_padding = new_padding
+      else
+	current_window_padding = normal_window_padding
+      end
+
+      overrides.window_padding = current_window_padding
+      window:set_config_overrides(overrides)
+    end)
+
+    -- KEY CONFIG
+
+    config.keys = {
+      {
+	key = "=",
+	mods = "ALT",
+	action = wezterm.action.EmitEvent 'toggle-font'
+      },
+      {
+	key = "-",
+	mods = "ALT",
+	action = wezterm.action.EmitEvent 'toggle-padding'
+      },
+    }
+
+    return config
