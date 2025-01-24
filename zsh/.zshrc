@@ -90,6 +90,15 @@ gli() {
   fi
 }
 
+gshowi() {
+  selected_commit=$(git log $1 --pretty=format:"%C(auto,yellow)%h%Creset %as %Cblue%an%Creset %s" | fzf --layout=reverse --preview "echo {} | sed -e 's/\s.*//' | xargs git show --name-only" | awk -F' ' '{print $1}')
+
+  if  [ -n "$selected_commit" ]; then
+    echo $selected_commit
+    git show $selected_commit
+  fi
+}
+
 gci() {
   selected_branch=$(git for-each-ref refs/heads/ --format='%(refname:short)' | fzf --height=30%)
 
