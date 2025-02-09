@@ -38,11 +38,11 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 # ALIASES
 alias vim=nvim
 alias v=vim
-# alias neovide="neovide --frame none"
 alias nv=neovide
 alias hx=helix
 alias cat=bat
 alias copy="xclip -sel clip"
+alias task="go-task"
 
 # EZA ALIASES
 alias ls="eza"
@@ -105,6 +105,15 @@ gci() {
   if  [ -n "$selected_branch" ]; then
     echo $selected_branch
     git checkout $selected_branch
+  fi
+}
+
+gswi() {
+  selected_branch=$(git for-each-ref refs/heads/ --format='%(refname:short)' | fzf --height=30%)
+
+  if  [ -n "$selected_branch" ]; then
+    echo $selected_branch
+    git switch $selected_branch
   fi
 }
 
