@@ -4,7 +4,7 @@ local config = wezterm.config_builder()
 
 config.enable_wayland = false
 
-config.color_scheme = "Everforest Dark (Gogh)"
+config.color_scheme = "Catppuccin Macchiato"
 config.enable_tab_bar = false
 config.window_close_confirmation = "NeverPrompt"
 -- config.window_background_opacity = 0.90
@@ -19,15 +19,15 @@ local small_font = {
 }
 
 local large_font = {
-  font = wezterm.font("Liga Input"),
+  font = wezterm.font("Input Mono Condensed"),
   size = 15,
-  rules = {}
-  -- rules = {
-    --   {
-      --     intensity = 'Bold',
-      --     font = wezterm.font("Tamzen"),
-      --   }
-      -- },
+  -- rules = {},
+  rules = {
+      {
+          intensity = 'Bold',
+          font = wezterm.font("Input Mono Condensed"),
+        }
+      },
     }
 
     local current_font = large_font
