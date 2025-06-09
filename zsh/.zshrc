@@ -57,14 +57,17 @@ alias dcu="docker compose up"
 alias dcd="docker compose down"
 alias dcl="docker compose logs"
 alias dps="docker ps"
-alias dpsi="docker ps --format 'table {{.ID}}\t{{.Names}}\t{{.State}}' | tail -n +2 | fzf --layout=reverse | awk -F ' ' '{print \$1}' | tr -d '\n'"
+alias dpsi="docker ps --format 'table {{.ID}}\t{{.Names}}\t{{.State}}' | tail -n +2 | fzf -m --layout=reverse | awk -F ' ' '{print \$1}'"
 
 dki() {
-  selected_container=$(dpsi)
+  selected_containers=$(dpsi)
 
-  if  [ -n "$selected_container" ]; then
-    echo docker kill $selected_container
-    docker kill $selected_container
+  IFS=$'\n'
+  if  [ -n "$selected_containers" ]; then
+	  for i in ${(f)selected_containers}; do
+		echo docker kill $i
+		docker kill $i
+	done
   fi
 }
 
@@ -161,6 +164,13 @@ eval "$(pyenv init -)"
 
 # opam configuration
 [[ ! -r /home/ioane/.opam/opam-init/init.zsh ]] || source /home/ioane/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/home/ioane/.local/google-cloud-sdk/path.zsh.inc' ]; then . '/home/ioane/.local/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/home/ioane/.local/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/ioane/.local/google-cloud-sdk/completion.zsh.inc'; fi
+
 eval "$(direnv hook zsh)"
 
 source /usr/share/nvm/init-nvm.sh
