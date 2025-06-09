@@ -161,3 +161,6 @@ eval "$(pyenv init -)"
 
 # opam configuration
 [[ ! -r /home/ioane/.opam/opam-init/init.zsh ]] || source /home/ioane/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
+eval "$(direnv hook zsh)"
+
+source /usr/share/nvm/init-nvm.sh
