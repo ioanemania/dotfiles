@@ -14,6 +14,7 @@ alias cat=bat
 alias copy="xclip -sel clip"
 alias task="go-task"
 alias k=kubectl
+alias sudo=sudo-rs
 
 # EZA ALIASES
 alias ls="eza"
