@@ -1,23 +1,46 @@
-# Get editor completions based on the config schema
-"$schema" = 'https://starship.rs/config-schema.json'
+format = """
+$username\
+$hostname\
+$directory\
+$git_branch\
+$git_state\
+$git_status\
+$python\
+$cmd_duration\
+$line_break\
+$character"""
 
-# Inserts a blank line between shell prompts
-add_newline = true
+[directory]
+style = "blue"
 
-format = ' $all'
+[character]
+success_symbol = "[INSERT](cyan)"
+error_symbol = "[ERROR](red)"
+vimcmd_symbol = "[NORMAL](green)"
 
-# Replace the '❯' symbol in the prompt with '➜'
-[character] # The name of the module we are configuring is 'character'
-success_symbol = ' [➜](bold green)' # The 'success_symbol' segment is being set to '➜' with the color 'bold green'
-error_symbol = ' [➜](bold red)'
-vimcmd_symbol = ' [:](bold green)'
-vimcmd_replace_one_symbol = ' [:](bold purple)'
-vimcmd_replace_symbol = ' [:](bold purple)'
-vimcmd_visual_symbol = ' [:](bold yellow)'
+[git_branch]
+format = "[$branch]($style)"
+style = "bright-black"
 
-# Disable the package module, hiding it from the prompt completely
-[package]
-disabled = true
+[git_status]
+format = "[[(*$conflicted$untracked$modified$staged$renamed$deleted)](218) ($ahead_behind$stashed)]($style)"
+style = "cyan"
+conflicted = "​"
+untracked = "​"
+modified = "​"
+staged = "​"
+renamed = "​"
+deleted = "​"
+stashed = "≡"
 
-[gcloud]
-disabled = true
+[git_state]
+format = '\([$state( $progress_current/$progress_total)]($style)\) '
+style = "bright-black"
+
+[cmd_duration]
+format = "[$duration]($style) "
+style = "yellow"
+
+[python]
+format = "[$virtualenv@$version]($style) "
+style = "bright-black"
