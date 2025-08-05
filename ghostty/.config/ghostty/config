@@ -1,4 +1,4 @@
-font-family = "Jetbrains Mono"
+font-family = "Operator Mono Lig"
 font-style = "Medium"
-font-size = 13.5
-theme = GitHub-Dark-Dimmed
+font-size = 11
+theme = dark:lackluster,light:GitHub-Light-Default
