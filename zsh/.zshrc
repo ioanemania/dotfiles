@@ -1,9 +1,10 @@
 export ZSH="$HOME/.zsh" export SHELL='/usr/bin/zsh'
 export PATH="$PATH:$HOME/.local/bin:$HOME/.bin"
+export PATH="$PATH":"$HOME/.pub-cache/bin"
 
 export EDITOR=nvim
 export LC_TIME="en_US.UTF-8"
-export BAT_THEME="gruvbox-dark"
+export BAT_THEME="ansi"
 export VPN="$HOME/.vpn"
 export TERMCMD="ghostty"
 
@@ -25,6 +26,7 @@ source $HOME/.zsh-vi-mode/zsh-vi-mode.plugin.zsh
 
 # Completion
 autoload -Uz compinit && compinit
+source <(COMPLETE=zsh jj)
 
 # Beam shaped cursor
 # echo -ne '\e[5 q'
@@ -43,7 +45,7 @@ alias nv=neovide
 alias hx=helix
 alias cat=bat
 alias copy="xclip -sel clip"
-alias task="go-task"
+alias task="nvim ~/.current_task"
 
 # EZA ALIASES
 alias ls="eza"
@@ -83,6 +85,7 @@ alias gll="git log --name-only"
 alias glr="git log --pretty=reference"
 alias lg="lazygit"
 alias rfci="fd -a --base-directory /usr/share/doc/rfc/txt | fzf | xargs nvim +ZenMode -"
+alias ng="nvim +Neogit NEOGIT"
 
 gli() {
   branch=$1
@@ -144,7 +147,10 @@ load_env() {
   done
 }
 
-function y() {
+# YAZI Aliases
+alias y=yazi
+
+function ycd() {
 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
 	yazi "$@" --cwd-file="$tmp"
 	if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
@@ -184,3 +190,11 @@ export AVANTE_GEMINI_API_KEY=AIzaSyCqOHIA6t5G66O9ZlqESiZvW9pamFNhmsM
 
 # opencode
 export PATH=/home/ioane/.opencode/bin:$PATH
+
+# Jujutsu
+alias j=jj
+alias nj="nvim +Neojj NEOJJ"
+export JJ_STARSHIP_JJ_SYMBOL='🥋 '
+
+# Flutter
+export PATH=/home/ioane/.local/sdk/flutter_3.44.0-stable/flutter/bin:$PATH
