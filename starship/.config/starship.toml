@@ -2,11 +2,9 @@ format = """
 $username\
 $hostname\
 $directory\
-$git_branch\
-$git_state\
-$git_status\
-$python\
+${custom.jj}\
 $cmd_duration\
+${custom.current_task}\
 $line_break\
 $character"""
 
@@ -44,3 +42,13 @@ style = "yellow"
 [python]
 format = "[$virtualenv@$version]($style) "
 style = "bright-black"
+
+[custom.jj]
+when = "/home/ioane/.cargo/bin/jj-starship detect"
+shell = ["/home/ioane/.cargo/bin/jj-starship"]
+format = "$output "
+
+[custom.current_task]
+when = "test -f $HOME/.current_task"
+command = "cat $HOME/.current_task | head -n 1"
+format = "📝 $output "
