@@ -1,13 +1,19 @@
-font-family = "Bakemono Mono"
-font-style = "Medium"
-font-size = 15
+font-family = "Iosevka Big 27"
+font-style = "Retina"
+font-size = 18
 
-theme = dark:kanagawa-wave,light:kanagawa-lotus
+theme = dark:Gruvbox Material Dark,light:Gruvbox Material Light
 
-window-padding-x = 20
-window-padding-y = 10,0
+background-opacity = 1
+background-blur = true
+window-padding-y = 0
+window-padding-x = 0
+window-padding-balance = true
+window-padding-color = extend
+window-decoration = false
 
 adjust-cursor-thickness = 100%
 custom-shader = shaders/cursor_smear.glsl
 
 keybind = alt+p=toggle_command_palette
+shell-integration-features = "ssh-terminfo,ssh-env,sudo"
